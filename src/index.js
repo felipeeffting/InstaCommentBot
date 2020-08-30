@@ -1,14 +1,17 @@
 const puppeteer = require('puppeteer');
+const dictionary = require('./dictionary');
 
 const URLLOGIN = "https://www.instagram.com/accounts/login/?next=%2F&source=logged_out_half_sheet";
 
-const USERNAME = "USERNAME";
-const PASSWORD = "PASSWOR";
-const URLPOST = "https://www.instagram.com/p/";
 const LOGINFACEBOOK = false;
+const USEDICTIONARY = true;
 
+const USERNAME = "username";
+const PASSWORD = "password";
+
+const URLPOST = "https://www.instagram.com/p/";
 const COMMENT = "@testedesenvolvimento159 ";
-const QUANTITY = 999999;
+const QUANTITY = 1;
 
 async function clickButton(page, selector) {
     await page.waitFor(selector);
@@ -18,7 +21,7 @@ async function clickButton(page, selector) {
 
 (async () => {
     const browser = await puppeteer.launch({
-        // headless: false
+        headless: false
     });
     
     const page = await browser.newPage();
@@ -47,10 +50,14 @@ async function clickButton(page, selector) {
     await page.waitFor(5000);
 
     for (let i = 0; i < QUANTITY; i++) {
+      let commentFormated = COMMENT;
+      console.log(dictionary[0]);
+      if (USEDICTIONARY) commentFormated += ' ' + dictionary[0];
+
       await page.goto(URLPOST);
 
       await page.waitFor('textarea[class="Ypffh"]');
-      await page.type('textarea[class="Ypffh"]', COMMENT + ' ' + i);
+      await page.type('textarea[class="Ypffh"]', commentFormated);
 
       await page.click('button[class="sqdOP yWX7d    y3zKF     "]');
 
